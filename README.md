@@ -2,6 +2,8 @@
 
 This project provides an Ansible playbook to set up a Raspberry Pi Kubernetes cluster using k3s, specifically designed to run the Dragon Ball Z game using EmulatorJS.
 
+![2](https://github.com/user-attachments/assets/be638405-ef20-47d4-92ab-6c3902b1f1c1) 
+
 ## Prerequisites
 
 ### Setting Up Raspberry Pis
