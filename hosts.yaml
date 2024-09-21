@@ -1,0 +1,21 @@
+---
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+    vm:
+      ansible_host: ""
+      ansible_user: omer
+      ansible_become_password: ""
+    pi1:
+      ansible_host: ""
+      ansible_user: pi1
+      ansible_become_password: ""
+    pi2:
+      ansible_host: ""
+      ansible_user: pi2
+      ansible_become_password: ""
+    pi3:
+      ansible_host: ""
+      ansible_user: pi3
+      ansible_become_password: ""

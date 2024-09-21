@@ -1,0 +1,32 @@
+---
+- name: Copy K3S config
+  become: true
+  command: bash ../../k3s_operations.sh copy_k3s_config ../templates/config.yaml /etc/rancher/k3s/
+  register: config_copy_result
+  changed_when: config_copy_result.rc == 0
+
+- name: Install K3s
+  become: true
+  command: bash ../../k3s_operations.sh install_k3s_master
+  async: 600
+  poll: 5
+  register: k3s_install_result
+  failed_when: k3s_install_result.rc != 0
+
+- name: Restart K3s service using
+  become: true
+  command: bash ../../k3s_operations.sh restart_k3s_service
+  register: service_restart_result
+  changed_when: service_restart_result.rc == 0
+
+- name: Get K3s token
+  become: true
+  command: bash ../../k3s_operations.sh get_token
+  register: k3s_token
+  changed_when: false
+
+- name: Setup kubeconfig
+  become: true
+  command: bash ../../k3s_operations.sh setup_kubeconfig "/home/{{ ansible_user }}/.kube"
+  register: kubeconfig_setup_result
+  changed_when: kubeconfig_setup_result.rc == 0

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emulatorjs
+  labels:
+    app: emulatorjs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: emulatorjs
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: emulatorjs
+    spec:
+      containers:
+        - name: emulatorjs
+          image: lscr.io/linuxserver/emulatorjs:latest
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+            - name: SUBFOLDER
+              value: /
+            - name: TZ
+              value: Etc/UTC
+          ports:
+            - containerPort: 3000
+            - containerPort: 80
+            - containerPort: 4001
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+            - mountPath: /data
+              name: data-volume
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: emulatorjs-claim
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: emulatorjs-claim

@@ -1,0 +1,27 @@
+---
+- name: Update boot parameters using bash script
+  become: true
+  command: bash ../../k3s_operations.sh update_boot_params
+  register: boot_update_result
+  changed_when: boot_update_result.rc == 0
+
+- name: Restart the system using bash script
+  become: true
+  command: bash ../../k3s_operations.sh restart_system
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: Copy K3s configuration using bash script
+  become: true
+  command: bash ../../k3s_operations.sh copy_k3s_config ../templates/config.yaml /etc/rancher/k3s/
+  register: config_copy_result
+  changed_when: config_copy_result.rc == 0
+
+- name: Install K3s agent using bash script
+  become: true
+  command: bash /path/to/k3s_operations.sh install_k3s_agent
+  async: 600
+  poll: 5
+  register: k3s_setup_result
+  failed_when: k3s_setup_result.rc not in [0, 1]

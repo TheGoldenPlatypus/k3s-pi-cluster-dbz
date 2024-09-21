@@ -1,0 +1,10 @@
+---
+- name: Install k3s master
+  hosts: vm
+  roles:
+    - k3s-install-master
+    
+- name: Install k3s agent nodes
+  hosts: pi1 pi2 pi3
+  roles:
+    - k3s-install-agents
